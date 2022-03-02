@@ -1,51 +1,35 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace ValidacionFormularios.Models
 {
-    public class Usuario: ValidationAttribute
+    [Table("Usuarios")]
+    public class Usuario
     {
         #region ATRIBUTOS
-            [Required(ErrorMessage ="Este campo es requerido.")]
-            [MaxLength(100, ErrorMessage = "El nombre no puede contener más de 100 caracteres.")]
-            [MinLength(2, ErrorMessage = "El nombre no puede contener menos de 2 caracteres.")]
-            public String Nombre { get; set; }
+        [Column("nombre")]
+        public string Nombre { get; set; }
 
-            public String Apellidos { get; set; }
+        [Column("apellidos")]
+        public string Apellidos { get; set; }
+            
+        [Column("edad")]
+        public int Edad { get; set; }
+            
+        [Key]
+        [Column("email")]
+        public string Email { get; set; }
+            
+        [Column("contrasenia")]
+        public string Contrasenia { get; set; }
 
-            [Required(ErrorMessage = "Este campo es requerido.")]
-            [Range(10, 100,ErrorMessage ="La edad debe estar comprendida entre los 10 y los 100 años.")]
-            public int Edad { get; set; }
-
-            [Required(ErrorMessage = "Este campo es requerido.")]
-            [RegularExpression(@"^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$", ErrorMessage ="Formato incorrecto.")]
-            public String Email { get; set; }
-
-            [Required(ErrorMessage = "Este campo es requerido.")]
-            [RegularExpression(@"^(?=\w*\d)(?=\w*[A-Z])(?=\w*[a-z])\S{8,16}$", ErrorMessage = "La contraseña debe tener entre 8 y 16 caracteres, al menos un dígito, al menos una minúscula y al menos una mayúscula.")]
-            public String Contrasenia { get; set; }
-
-            [Required(ErrorMessage = "Este campo es requerido.")]
-            [Compare("Contrasenia", ErrorMessage ="Las contraseñas no coinciden.")]
-            public String ConfirmarContrasenia { get; set; }
-        #endregion
-
-        #region MÉTODOS
-            public override bool IsValid(object usuario)
-            {
-                Usuario objeto = (Usuario)usuario;
-                if (objeto.Edad >= 18)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
+        [Column("confirmarContrasenia")]
+        public string ConfirmarContrasenia { get; set; }
         #endregion
     }
 }
